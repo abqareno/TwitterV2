@@ -13,9 +13,9 @@ r = requests.get("https://twitter.com/"+search)
 soup = BeautifulSoup(r.text, "html.parser")
 
 results = soup.find("ol",{"id": "stream-items-id"})
-links = results.findAll ("li", {"data-item-type": "tweet"})
+tweets = results.findAll ("li", {"data-item-type": "tweet"})
 
-for tweet in links:
+for tweet in tweets:
     tweet_FullName = tweet.find("strong", "fullname show-popup-with-id u-textTruncate").text
     tweet_Date = tweet.find("small", "time").text
     tweet_text = tweet.find("p", "TweetTextSize TweetTextSize--normal js-tweet-text tweet-text").text
@@ -24,10 +24,9 @@ for tweet in links:
         print (tweet_text)
     #looking for images
 
-    tweet_image_container =  tweet.find("div", "AdaptiveMediaOuterContainer")
+    tweet_image_container =  tweet.find("div", {'class' :"AdaptiveMediaOuterContainer"})
 
     if(tweet_image_container):
-        print(tweet_image_container.find("img").attrs)
         tweet_image = tweet_image_container.find("img").attrs["src"]
         print(color.BOLD, color.GREEN, tweet_image, color.END)
         '''for photo in tweet_image_container.findAll("img"):
